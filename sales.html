@@ -78,9 +78,9 @@
                 const option = document.createElement('option');
                 option.value = product.productName;
                 option.textContent = product.productName;
-                option.setAttribute('data-price', product.price); // Store price as a data attribute
-                option.setAttribute('data-category', product.category); // Store category as a data attribute
-                option.setAttribute('data-tax-amount', product.taxAmount); // Store tax amount as a data attribute
+                option.setAttribute('data-price', product.price); 
+                option.setAttribute('data-category', product.category); 
+                option.setAttribute('data-tax-amount', product.taxAmount); 
                 productDropdown.appendChild(option);
             });
 
@@ -137,8 +137,7 @@
 
         function generateFinalBill() {
             
-            alert('Final Bill Generated!'); // Replace this with your logic
-        }
+            alert('Final Bill Generated!'); 
     </script>
 </body>
 </html>
