@@ -8,7 +8,7 @@ async function fetchProductCategories() {
 
         const data = await response.json();
         console.log('Product Categories:', data);
-        // Update HTML components with the fetched data
+        
     } catch (error) {
         console.error('Error fetching product categories:', error);
     }
@@ -57,8 +57,8 @@ async function addProductCategory() {
 
         const newCategory = await response.json();
         console.log('New Product Category:', newCategory);
-        // Update HTML components or perform other actions
-        refreshDropdowns(); // Refresh dropdowns after adding a new category
+        
+        refreshDropdowns(); 
     } catch (error) {
         console.error('Error adding product category:', error);
     }
@@ -82,7 +82,7 @@ async function addGSTRate() {
 
         const newGSTRate = await response.json();
         console.log('New GST Rate:', newGSTRate);
-        // Update HTML components or perform other actions
+        
     } catch (error) {
         console.error('Error adding GST rate:', error);
     }
@@ -107,8 +107,8 @@ async function addProduct() {
 
         const newProduct = await response.json();
         console.log('New Product:', newProduct);
-        // Update HTML components or perform other actions
-        refreshDropdowns(); // Refresh dropdowns after adding a new product
+        
+        refreshDropdowns();
     } catch (error) {
         console.error('Error adding product:', error);
     }
@@ -132,7 +132,7 @@ async function addSale() {
 
         const newSale = await response.json();
         console.log('New Sale:', newSale);
-        // Update HTML components or perform other actions
+        
     } catch (error) {
         console.error('Error adding sale:', error);
     }
