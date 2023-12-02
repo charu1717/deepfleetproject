@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GST Software - Create Products</title>
+    <link rel="stylesheet" type="text/css" href="style2.css">
+</head>
+<body>
+    <header>
+        <h1>GST Software</h1>
+    </header>
+    <main>
+        <h2>Create Products</h2>
+        <form id="createProductForm">
+            <label for="productName">Product Name:</label>
+            <input type="text" id="productName" required>
+
+            <label for="categoryDropdown">Category:</label>
+            <select id="categoryDropdown" required>
+                <option value="" disabled selected>Select the category</option>
+            </select>
+
+            <label for="productPrice">Product Price:</label>
+            <input type="number" id="productPrice" min="0" required>
+
+            <label for="productGstRate">GST Rate:</label>
+            <input type="number" id="productGstRate" min="0" readonly>
+
+            <label for="taxAmount">Tax Amount:</label>
+            <input type="text" id="taxAmount" readonly>
+
+            <button type="button" id="addProductBtn">Add Product</button>
+
+            <button type="button" onclick="navigateToCreateSale()">Next</button>
+            <div id="message" class="message"></div>
+        </form>
+
+        <ul id="productList"></ul>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            loadCategories();
+            document.getElementById('addProductBtn').addEventListener('click', addProduct);
+        });
+
+        function loadCategories() {
+    const categoryDropdown = document.getElementById('categoryDropdown');
+    const productPriceInput = document.getElementById('productPrice');
+    const categories = JSON.parse(localStorage.getItem('categories')) || [];
+
+    // Add a default option
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.text = 'Select the category';
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    categoryDropdown.appendChild(defaultOption);
+
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.categoryName;
+        option.textContent = category.categoryName;
+        categoryDropdown.appendChild(option);
+    });
+
+    categoryDropdown.addEventListener('change', recalculateTax);
+    productPriceInput.addEventListener('input', recalculateTax);
+
+    // Trigger initial calculation
+    recalculateTax();
+
+    function recalculateTax() {
+        const selectedCategory = categoryDropdown.value;
+        const selectedCategoryObject = categories.find(category => category.categoryName === selectedCategory);
+        const productPrice = parseFloat(productPriceInput.value);
+        
+        if (!isNaN(productPrice) && selectedCategoryObject) {
+            const productGstRate = selectedCategoryObject.gstRate;
+            const taxAmount = (productPrice * productGstRate) / 100;
+            document.getElementById('productGstRate').value = productGstRate;
+            document.getElementById('taxAmount').value = taxAmount.toFixed(2);
+        }
+    }
+
+    const changeEvent = new Event('change');
+    categoryDropdown.dispatchEvent(changeEvent);
+}
+function showMessage(message) {
+    console.log('Add Product button clicked');
+    alert(message);
+}
+
+
+function addProduct() {
+    const productName = document.getElementById('productName').value;
+    const categoryDropdown = document.getElementById('categoryDropdown');
+    const selectedCategory = categoryDropdown.value;
+    const productPrice = parseFloat(document.getElementById('productPrice').value);
+    const productGstRate = parseFloat(document.getElementById('productGstRate').value);
+    const taxAmount = calculateTax();
+
+    saveProduct(productName, selectedCategory, productPrice, productGstRate, taxAmount);
+    loadProducts();
+    document.getElementById('createProductForm').reset();
+    showMessage(`Product "${productName}" is added.`);
+}
+        function calculateTax() {
+            const productPrice = parseFloat(document.getElementById('productPrice').value);
+            const productGstRate = parseFloat(document.getElementById('productGstRate').value);
+            const taxAmount = (productPrice * productGstRate) / 100;
+            document.getElementById('taxAmount').value = taxAmount.toFixed(2);
+            return taxAmount;
+        }
+
+        function saveProduct(productName, selectedCategory, productPrice, productGstRate, taxAmount) {
+            const existingProducts = JSON.parse(localStorage.getItem('products')) || [];
+            const newProduct = { productName, category: selectedCategory, price: productPrice, gstRate: productGstRate, taxAmount };
+            existingProducts.push(newProduct);
+            localStorage.setItem('products', JSON.stringify(existingProducts));
+        }
+
+        function loadProducts() {
+    const productList = document.getElementById('productList');
+    productList.innerHTML = '';
+
+    const products = JSON.parse(localStorage.getItem('products')) || [];
+
+    products.forEach(product => {
+        const listItem = document.createElement('li');
+        const taxAmount = product.taxAmount || 0; // Use 0 if taxAmount is undefined
+        listItem.textContent = `Product: ${product.productName}, Category: ${product.category}, Price: ${product.price}, GST Rate: ${product.gstRate}%, Tax Amount: ${taxAmount.toFixed(2)}`;
+        productList.appendChild(listItem);
+    });
+}
+
+        function navigateToCreateSale() {
+        window.location.href = 'sales.html';
+    }
+    </script>
+</body>
+</html>

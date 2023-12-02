@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GST Software - Create Product Categories</title>
+    <style>
+        /* Styles as before */
+    </style>
+</head>
+<body>
+    <header>
+        <h1>GST Software</h1>
+    </header>
+    <main>
+        <h2>Create Product Categories</h2>
+        <form id="createCategoryForm">
+            <label for="categoryName">Category Name:</label>
+            <input type="text" id="categoryName" required>
+
+            <label for="gstRate">GST Rate:</label>
+            <input type="number" id="gstRate" min="0" required>
+
+            <button type="button" onclick="addCategory()">Add Category</button>
+        </form>
+
+        <ul id="categoryList"></ul>
+    </main>
+
+    <script>
+        // Load categories from local storage on page load
+        window.onload = function() {
+            loadCategories();
+        };
+
+        function addCategory() {
+            const categoryName = document.getElementById('categoryName').value;
+            const gstRate = document.getElementById('gstRate').value;
+
+            // You can perform additional validation here if needed
+
+            // Add the category to the local storage
+            saveCategory(categoryName, gstRate);
+
+            // Reload the category list
+            loadCategories();
+
+            // Optionally, clear the form after adding the category
+            document.getElementById('createCategoryForm').reset();
+        }
+
+        function saveCategory(categoryName, gstRate) {
+            // Retrieve existing categories from local storage
+            const existingCategories = JSON.parse(localStorage.getItem('categories')) || [];
+
+            // Add the new category
+            const newCategory = { categoryName, gstRate };
+            existingCategories.push(newCategory);
+
+            // Save the updated categories to local storage
+            localStorage.setItem('categories', JSON.stringify(existingCategories));
+        }
+
+        function loadCategories() {
+            const categoryList = document.getElementById('categoryList');
+            categoryList.innerHTML = '';
+
+            // Retrieve categories from local storage
+            const categories = JSON.parse(localStorage.getItem('categories')) || [];
+
+            // Display categories in the list
+            categories.forEach(category => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `Category: ${category.categoryName}, GST Rate: ${category.gstRate}%`;
+                categoryList.appendChild(listItem);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GST Software - Create Products</title>
+    <link rel="stylesheet" type="text/css" href="style3.css">
+</head>
+<body>
+    <header>
+        <h1>GST Software</h1>
+    </header>
+    <main>
+        <h2>Create Sale</h2>
+        <form id="createSaleForm">
+            <label for="productDropdown">Product:</label>
+            <select id="productDropdown" required>
+                <option value="" disabled selected>Select the product</option>
+            </select>
+
+            <label for="priceCell">Price:</label>
+            <input type="text" id="priceCell" readonly>
+
+            <label for="categoryCell">Category:</label>
+            <input type="text" id="categoryCell" readonly>
+
+            <label for="taxAmount">Tax Amount:</label>
+            <input type="text" id="taxAmount" readonly>
+
+            <button type="button" id="addProductToSaleBtn">Add Product to Sale</button>
+        </form>
+
+        <h2>Final Bill</h2>
+        <table id="finalBillTable">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Tax Amount</th>
+                </tr>
+            </thead>
+            <tbody id="finalBillBody">
+                <!-- Table rows go here -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"></td>
+                    <td>Total:</td>
+                    <td id="totalPrice">0.00</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <button type="button" id="generateFinalBillBtn">Generate Final Bill</button>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            loadProducts();
+            document.getElementById('addProductToSaleBtn').addEventListener('click', addProductToSale);
+            document.getElementById('generateFinalBillBtn').addEventListener('click', generateFinalBill);
+        });
+
+        function loadProducts() {
+            const productDropdown = document.getElementById('productDropdown');
+            const products = JSON.parse(localStorage.getItem('products')) || [];
+
+            // Add a default option
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.text = 'Select the product';
+            defaultOption.disabled = true;
+            defaultOption.selected = true;
+            productDropdown.appendChild(defaultOption);
+
+            products.forEach(product => {
+                const option = document.createElement('option');
+                option.value = product.productName;
+                option.textContent = product.productName;
+                option.setAttribute('data-price', product.price); // Store price as a data attribute
+                option.setAttribute('data-category', product.category); // Store category as a data attribute
+                option.setAttribute('data-tax-amount', product.taxAmount); // Store tax amount as a data attribute
+                productDropdown.appendChild(option);
+            });
+
+            productDropdown.addEventListener('change', function() {
+                const selectedProduct = this.value;
+                const selectedProductObject = products.find(product => product.productName === selectedProduct);
+
+                // Populate the price, category, and taxAmount cells
+                document.getElementById('priceCell').value = selectedProductObject ? selectedProductObject.price.toFixed(2) : '';
+                document.getElementById('categoryCell').value = selectedProductObject ? selectedProductObject.category : '';
+                document.getElementById('taxAmount').value = selectedProductObject ? selectedProductObject.taxAmount.toFixed(2) : '';
+            });
+        }
+
+        function addProductToSale() {
+            const productName = document.getElementById('productDropdown').value;
+            const productCategory = document.getElementById('categoryCell').value;
+            const productPrice = parseFloat(document.getElementById('priceCell').value);
+            const taxAmount = parseFloat(document.getElementById('taxAmount').value);
+
+            // Create a table row and add it to the final bill table
+            const finalBillTable = document.getElementById('finalBillTable');
+            const finalBillBody = document.getElementById('finalBillBody');
+
+            const newRow = finalBillBody.insertRow();
+            const cell1 = newRow.insertCell(0);
+            const cell2 = newRow.insertCell(1);
+            const cell3 = newRow.insertCell(2);
+            const cell4 = newRow.insertCell(3);
+
+            cell1.textContent = productName;
+            cell2.textContent = productCategory;
+            cell3.textContent = productPrice.toFixed(2);
+            cell4.textContent = taxAmount.toFixed(2);
+
+            // Calculate and update the total price
+            calculateTotalPrice();
+        }
+
+        function calculateTotalPrice() {
+            const finalBillBody = document.getElementById('finalBillBody');
+            const rows = finalBillBody.getElementsByTagName('tr');
+
+            let totalPrice = 0;
+
+            for (let i = 0; i < rows.length; i++) {
+                const priceCell = rows[i].getElementsByTagName('td')[2];
+                totalPrice += parseFloat(priceCell.textContent);
+            }
+
+            document.getElementById('totalPrice').textContent = totalPrice.toFixed(2);
+        }
+        
+
+        function generateFinalBill() {
+            // You can perform any additional actions needed for the final bill
+            // For example, displaying a PDF, sending an email, etc.
+            alert('Final Bill Generated!'); // Replace this with your logic
+        }
+    </script>
+</body>
+</html>
+
