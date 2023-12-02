@@ -1,8 +1,4 @@
-// main.js
 
-// Example functions for frontend logic
-
-// Function to fetch product categories
 async function fetchProductCategories() {
     try {
         const response = await fetch('http://localhost:3005/api/product-categories');
@@ -18,7 +14,7 @@ async function fetchProductCategories() {
     }
 }
 
-// Function to fetch products and populate the product dropdown
+
 async function fetchProductsAndPopulateDropdown() {
     try {
         const response = await fetch('http://localhost:3005/api/products');
@@ -29,10 +25,9 @@ async function fetchProductsAndPopulateDropdown() {
         const products = await response.json();
         const productSelect = document.getElementById('productSelect');
 
-        // Clear existing options
+  
         productSelect.innerHTML = '';
 
-        // Populate dropdown with product options
         products.forEach((product) => {
             const option = document.createElement('option');
             option.value = product.id;
@@ -44,7 +39,7 @@ async function fetchProductsAndPopulateDropdown() {
     }
 }
 
-// Function to add a new product category
+
 async function addProductCategory() {
     try {
         const categoryName = document.getElementById('categoryName').value;
@@ -69,7 +64,6 @@ async function addProductCategory() {
     }
 }
 
-// Function to add a new GST rate
 async function addGSTRate() {
     try {
         const categoryId = document.getElementById('categorySelect').value;
@@ -94,7 +88,6 @@ async function addGSTRate() {
     }
 }
 
-// Function to add a new product
 async function addProduct() {
     try {
         const productName = document.getElementById('productName').value;
@@ -121,7 +114,6 @@ async function addProduct() {
     }
 }
 
-// Function to add a new sale
 async function addSale() {
     try {
         const productId = document.getElementById('productSelect').value;
@@ -146,7 +138,7 @@ async function addSale() {
     }
 }
 
-// Function to fetch products and populate the product dropdown
+
 async function fetchProductsAndPopulateDropdown() {
     try {
         const response = await fetch('http://localhost:3005/api/products');
@@ -162,10 +154,9 @@ async function fetchProductsAndPopulateDropdown() {
             return;
         }
 
-        // Clear existing options
+
         productSelect.innerHTML = '';
 
-        // Populate dropdown with product options
         products.forEach((product) => {
             const option = document.createElement('option');
             option.value = product.id;
@@ -177,24 +168,22 @@ async function fetchProductsAndPopulateDropdown() {
     }
 }
 
-// Function to refresh product and category dropdowns
+
 async function refreshDropdowns() {
     await fetchProductsAndPopulateDropdown();
 }
 
-// Function to initialize the application
 async function initializeApp() {
-    // Fetch and display initial data
+
     await refreshDropdowns();
     fetchAndDisplayGSTRates();
     fetchAndDisplayProducts();
     fetchAndDisplaySales();
 }
 
-// Initialize the application when the page loads
+
 window.onload = initializeApp;
 
-// Function to fetch and display GST rates
 async function fetchAndDisplayGSTRates() {
     try {
         const response = await fetch('http://localhost:3005/api/gst-rates');
@@ -205,10 +194,9 @@ async function fetchAndDisplayGSTRates() {
         const gstRates = await response.json();
         const gstRatesList = document.getElementById('gstRatesList');
 
-        // Clear existing content
+
         gstRatesList.innerHTML = '<h3>GST Rates:</h3>';
 
-        // Display GST rates
         gstRates.forEach((rate) => {
             gstRatesList.innerHTML += `<p>Category: ${rate.productCategoryId}, Rate: ${rate.rate}%</p>`;
         });
@@ -217,7 +205,6 @@ async function fetchAndDisplayGSTRates() {
     }
 }
 
-// Function to fetch and display products
 async function fetchAndDisplayProducts() {
     try {
         const response = await fetch('http://localhost:3005/api/products');
@@ -228,10 +215,10 @@ async function fetchAndDisplayProducts() {
         const products = await response.json();
         const productsList = document.getElementById('productsList');
 
-        // Clear existing content
+
         productsList.innerHTML = '<h3>Products:</h3>';
 
-        // Display products
+       
         products.forEach((product) => {
             productsList.innerHTML += `<p>Name: ${product.name}, Category: ${product.productCategoryId}, Price: ${product.price}</p>`;
         });
@@ -240,7 +227,6 @@ async function fetchAndDisplayProducts() {
     }
 }
 
-// Function to fetch and display sales
 async function fetchAndDisplaySales() {
     try {
         const response = await fetch('http://localhost:3005/api/sales');
@@ -251,10 +237,10 @@ async function fetchAndDisplaySales() {
         const sales = await response.json();
         const salesList = document.getElementById('salesList');
 
-        // Clear existing content
+        
         salesList.innerHTML = '<h3>Sales:</h3>';
 
-        // Display sales
+       
         sales.forEach((sale) => {
             salesList.innerHTML += `<p>Product: ${sale.productId}, Quantity: ${sale.quantity}</p>`;
         });
