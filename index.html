@@ -26,7 +26,7 @@
     </main>
 
     <script>
-        // Load categories from local storage on page load
+        
         window.onload = function() {
             loadCategories();
         };
@@ -35,27 +35,24 @@
             const categoryName = document.getElementById('categoryName').value;
             const gstRate = document.getElementById('gstRate').value;
 
-            // You can perform additional validation here if needed
-
-            // Add the category to the local storage
+            
             saveCategory(categoryName, gstRate);
 
-            // Reload the category list
+            
             loadCategories();
 
-            // Optionally, clear the form after adding the category
+           
             document.getElementById('createCategoryForm').reset();
         }
 
         function saveCategory(categoryName, gstRate) {
-            // Retrieve existing categories from local storage
+            
             const existingCategories = JSON.parse(localStorage.getItem('categories')) || [];
 
-            // Add the new category
+           
             const newCategory = { categoryName, gstRate };
             existingCategories.push(newCategory);
 
-            // Save the updated categories to local storage
             localStorage.setItem('categories', JSON.stringify(existingCategories));
         }
 
@@ -63,10 +60,9 @@
             const categoryList = document.getElementById('categoryList');
             categoryList.innerHTML = '';
 
-            // Retrieve categories from local storage
+            
             const categories = JSON.parse(localStorage.getItem('categories')) || [];
 
-            // Display categories in the list
             categories.forEach(category => {
                 const listItem = document.createElement('li');
                 listItem.textContent = `Category: ${category.categoryName}, GST Rate: ${category.gstRate}%`;
