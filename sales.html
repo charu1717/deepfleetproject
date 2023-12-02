@@ -66,7 +66,7 @@
             const productDropdown = document.getElementById('productDropdown');
             const products = JSON.parse(localStorage.getItem('products')) || [];
 
-            // Add a default option
+            
             const defaultOption = document.createElement('option');
             defaultOption.value = '';
             defaultOption.text = 'Select the product';
@@ -116,7 +116,7 @@
             cell3.textContent = productPrice.toFixed(2);
             cell4.textContent = taxAmount.toFixed(2);
 
-            // Calculate and update the total price
+           
             calculateTotalPrice();
         }
 
@@ -136,8 +136,7 @@
         
 
         function generateFinalBill() {
-            // You can perform any additional actions needed for the final bill
-            // For example, displaying a PDF, sending an email, etc.
+            
             alert('Final Bill Generated!'); // Replace this with your logic
         }
     </script>
