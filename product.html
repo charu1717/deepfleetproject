@@ -128,7 +128,7 @@ function addProduct() {
 
     products.forEach(product => {
         const listItem = document.createElement('li');
-        const taxAmount = product.taxAmount || 0; // Use 0 if taxAmount is undefined
+        const taxAmount = product.taxAmount || 0;
         listItem.textContent = `Product: ${product.productName}, Category: ${product.category}, Price: ${product.price}, GST Rate: ${product.gstRate}%, Tax Amount: ${taxAmount.toFixed(2)}`;
         productList.appendChild(listItem);
     });
